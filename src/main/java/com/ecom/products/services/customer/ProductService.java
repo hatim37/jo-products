@@ -25,4 +25,16 @@ public class ProductService {
         return products.stream().map(Product::getDto).collect(Collectors.toList());
     }
 
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
+    }
+
+    public ResponseEntity<List<ProductDto>> findListById(List<Long> ids) {
+        List<Product> products = productRepository.findAllById(ids);
+        List<ProductDto> result = products.stream()
+                .map(p -> new ProductDto(p.getId(), p.getName(), p.getPrice()))
+                .toList();
+        return ResponseEntity.ok(result);
+    }
+
 }
